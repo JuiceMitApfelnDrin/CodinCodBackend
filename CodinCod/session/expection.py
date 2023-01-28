@@ -1,9 +1,9 @@
 from __future__ import annotations
 
-from ..exceptions import CodeRushException
+from ..exceptions import CodinCodException
 
 
-class SessionException(CodeRushException):
+class SessionException(CodinCodException):
     pass
 
 class InvalidMessageException(SessionException):

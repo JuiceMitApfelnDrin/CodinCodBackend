@@ -12,7 +12,7 @@ from typing import Final, ClassVar, Optional
 from . import Session, Message, MessageType, SessionException
 from ..user import User
 from ..game_room import GameRoom
-from ..exceptions import CodeRushException
+from ..exceptions import CodinCodException
 
 class SessionManager(Session):
     gameroom: Optional[GameRoom]
@@ -24,7 +24,7 @@ class SessionManager(Session):
                     message = await self.recv()
                     await self.packet_handler(message)
                     
-                except CodeRushException as exception:
+                except CodinCodException as exception:
                     # await self.send_error(exception.__class__.__name__, str(exception))
                     raise NotImplementedError
 

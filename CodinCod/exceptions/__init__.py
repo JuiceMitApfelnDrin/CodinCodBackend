@@ -1,4 +1,4 @@
-class CodeRushException(Exception):
+class CodinCodException(Exception):
     msg: str
     status: int
 

@@ -14,7 +14,7 @@ from validate_email import validate_email
 from .. import app
 
 from ...user import User
-from ...exceptions import CodeRushException
+from ...exceptions import CodinCodException
 
 @app.get('/users')
 async def users(request: Request):
@@ -23,7 +23,7 @@ async def users(request: Request):
         try:
             user_id = ObjectId(args["id"][0])
         except InvalidId:
-            raise CodeRushException("Invalid user id!")
+            raise CodinCodException("Invalid user id!")
             
         user = User.get_by_id(user_id)
         return json(user.public_info())

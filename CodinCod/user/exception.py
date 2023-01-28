@@ -1,8 +1,8 @@
 __all__ = ("UserException", "UserCreationException", "UserFindException", "UserAuthException")
 
-from ..exceptions import CodeRushException
+from ..exceptions import CodinCodException
 
-class UserException(CodeRushException):
+class UserException(CodinCodException):
     pass
 
 class UserCreationException(UserException):

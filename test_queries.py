@@ -1,8 +1,8 @@
 from bson.objectid import ObjectId
 
-from CodeRush.puzzle.puzzle import Puzzle
-from CodeRush.puzzle.puzzle_type import PuzzleType
-from CodeRush.user.user import User
+from CodinCod.puzzle.puzzle import Puzzle
+from CodinCod.puzzle.puzzle_type import PuzzleType
+from CodinCod.user.user import User
 
 
 # test query stuff from db

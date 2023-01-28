@@ -31,8 +31,8 @@ class Session:
 
         return Message.loads(message)
 
-    async def send(self, message: object):
-        await self.send(json.dumps(message))
+    async def send(self, message: Message):
+        await self.ws.send(message.dumps())
 
     def __del__(self):
         self.__sessions.remove(self)

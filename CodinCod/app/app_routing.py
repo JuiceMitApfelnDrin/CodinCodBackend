@@ -3,7 +3,7 @@ from sanic.request import Request
 
 from ..game_room import GameRoom
 from ..puzzle import Puzzle
-from ..exceptions import CodeRushException
+from ..exceptions import CodinCodException
 
 from .user.user import User
 
@@ -26,7 +26,7 @@ async def puzzle(request: Request):
         try:
             puzzle_id = ObjectId(args["id"][0])
         except InvalidId:
-            raise CodeRushException("Invalid puzzle id")
+            raise CodinCodException("Invalid puzzle id")
 
         puzzle = Puzzle.get_by_id(puzzle_id)
         return json(puzzle.as_dict())
@@ -35,9 +35,9 @@ async def puzzle(request: Request):
         try:
             author_id = ObjectId(args["author_id"][0])
         except InvalidId:
-            raise CodeRushException("Invalid user id")
+            raise CodinCodException("Invalid user id")
         
         puzzles = Puzzle.get_by_author(author_id)
         return json([puzzle.as_dict() for puzzle in puzzles])
         
-    raise CodeRushException("No puzzle_id/author_id was provided")
+    raise CodinCodException("No puzzle_id/author_id was provided")

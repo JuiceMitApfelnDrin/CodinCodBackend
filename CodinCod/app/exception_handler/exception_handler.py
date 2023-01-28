@@ -9,11 +9,11 @@ from bson.errors import InvalidId
 
 from .. import app
 
-from ...exceptions import CodeRushException
+from ...exceptions import CodinCodException
 
 
-@app.exception(CodeRushException)
-def CodeRushg_error(request: Request, exception: CodeRushException):
+@app.exception(CodinCodException)
+def CodinCodg_error(request: Request, exception: CodinCodException):
     return text(exception.msg, status = exception.status)
 
 

@@ -17,7 +17,7 @@ from .profile import Profile
 from . import users_collection
 from .exception import UserCreationException, UserFindException, UserAuthException
 
-from ..exceptions import CodeRushException
+from ..exceptions import CodinCodException
 
 from bcrypt import gensalt, hashpw, checkpw
 from base64 import b64encode, b64decode

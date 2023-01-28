@@ -1,4 +1,4 @@
-# CodeRushBackend
+# CodinCodBackend
 
 The (current) goal of this repo is to receive the code from the users, execute it and return the result.
 
@@ -14,7 +14,7 @@ Check it [start design](https://excalidraw.com/#json=VAclpcNvHgU1IEO3uDhSk,uvj6j
 # Setup
 ### required .env variables
 
-Create a `.env` file, in the CodeRush/environment_variables folder, checkout the `README.m` in there.
+Create a `.env` file, in the CodinCod/environment_variables folder, checkout the `README.m` in there.
 
 
 ### Add test data
@@ -45,5 +45,5 @@ sudo systemctl start nginx.service
 
 4- Run backend server.
 ```bash
-python3 -m CodeRush
+python3 -m CodinCod
 ```

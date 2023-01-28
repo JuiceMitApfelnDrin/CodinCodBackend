@@ -12,7 +12,7 @@ from ..user import auth
 
 from ...game_room import GameRoom
 from ...puzzle import Puzzle
-from ...exceptions import CodeRushException
+from ...exceptions import CodinCodException
 
 
 @app.get('/game_info')
@@ -24,7 +24,7 @@ async def game_info(request: Request) -> HTTPResponse:
     try:
         game_id = ObjectId(args["id"][0])
     except InvalidId:
-        raise CodeRushException("Invalid game id!")
+        raise CodinCodException("Invalid game id!")
 
     game = GameRoom.get_by_id(game_id)
     return json(game.as_dict())
@@ -37,7 +37,7 @@ async def game_join(request: Request) -> HTTPResponse:
     try:
         game_id = ObjectId(request.json["id"])
     except InvalidId:
-        raise CodeRushException("Invalid game id!")
+        raise CodinCodException("Invalid game id!")
         
     game = GameRoom.get_by_id(game_id)
     game.add_player(user)
@@ -52,11 +52,11 @@ async def game_start(request: Request) -> HTTPResponse:
     try:
         game_id = ObjectId(request.json["id"])
     except InvalidId:
-        raise CodeRushException("Invalid game id!")
+        raise CodinCodException("Invalid game id!")
 
     game = GameRoom.get_by_id(game_id)
     if game.creator is not user:
-        raise CodeRushException("Only the game creator is allowed to start the game!")
+        raise CodinCodException("Only the game creator is allowed to start the game!")
     
     game.launch_game()
 
@@ -70,7 +70,7 @@ async def game_leave(request: Request) -> HTTPResponse:
     try:
         game_id = ObjectId(request.json["id"])
     except InvalidId:
-        raise CodeRushException("Invalid game id!")
+        raise CodinCodException("Invalid game id!")
 
     game = GameRoom.get_by_id(game_id)
     game.remove_player(user)
