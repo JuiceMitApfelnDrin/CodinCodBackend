@@ -1,4 +1,4 @@
-__all__ = ("PuzzleType", "PuzzleDifficulty", "Puzzle", "puzzles_collection")
+__all__ = ("PuzzleType", "PuzzleDifficulty", "Puzzle", "puzzles_collection", "PuzzleException")
 
 from .puzzle_type import PuzzleType
 from .puzzle_difficulty import PuzzleDifficulty

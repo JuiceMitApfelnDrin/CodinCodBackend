@@ -1,18 +1,29 @@
-__all__ = ["app"]
+__all__ = ()
 
-from sanic.server.websockets.impl import WebsocketImplProtocol
 from typing import Final
 from sanic import Sanic
 from sanic.application.constants import ServerStage
 
-
 app: Final = Sanic("CodinCod", log_config={"version": 1})
+app.config.WEBSOCKET_MAX_SIZE = 128
+app.config.WEBSOCKET_PING_INTERVAL = None  # type: ignore
+app.config.WEBSOCKET_PING_TIMEOUT = None  # type: ignore
 
-from . import app_ws
-from . import app_routing
+from .game_room import game_room_blueprint
+from .puzzle import puzzle_blueprint
+from .user import user_blueprint
+from .app_ws import ws_blueprint
+from .ide import ide_blueprint
 
+app.blueprint([
+    game_room_blueprint,
+    puzzle_blueprint,
+    user_blueprint,
+    ws_blueprint,
+    ide_blueprint
+])
 
-def start():
+def app_start():
     if app.state.stage is not ServerStage.STOPPED:
         raise Exception("App is already running!")
 

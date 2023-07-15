@@ -1,13 +1,13 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from typing import Optional, cast, Any
+from dataclasses import dataclass
+from typing import cast, Any
 
 from bson.objectid import ObjectId
 from pymongo.errors import DuplicateKeyError
 
 from . import PuzzleType, PuzzleDifficulty, puzzles_collection
-from .exception import PuzzleException, PuzzleCreationException, PuzzleFindException
+from .exception import PuzzleCreationException, PuzzleFindException
 
 from .validator import Validator
 

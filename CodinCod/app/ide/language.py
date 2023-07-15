@@ -1,19 +1,12 @@
 from __future__ import annotations
 
-from typing import Any, Final
-
-from sanic import text, json
-from sanic.response import HTTPResponse, redirect
+from sanic import json
 from sanic.request import Request
 
-from bson.objectid import ObjectId
-from bson.errors import InvalidId
-from pymongo.errors import DuplicateKeyError
+from . import ide_blueprint
 
-from .. import app
-from ...submission.language import Language
+from ...piston import Language
 
-
-@app.get('/languages')
+@ide_blueprint.get('/languages')
 async def login(request: Request):
     return json(Language.all())

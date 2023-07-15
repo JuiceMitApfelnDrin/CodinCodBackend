@@ -1,14 +1,14 @@
 from sanic.server.websockets.impl import WebsocketImplProtocol
 from sanic.request import Request
-from . import app
+from sanic import Blueprint
+
+from typing import Final
+
 from ..session.manager import SessionManager
 
-app.config.WEBSOCKET_MAX_SIZE = 128
-app.config.WEBSOCKET_PING_INTERVAL = None  # type: ignore
-app.config.WEBSOCKET_PING_TIMEOUT = None  # type: ignore
+ws_blueprint: Final = Blueprint('ws', url_prefix='/')
 
-
-@app.websocket("/", name='ws')
+@ws_blueprint.websocket("/", name='ws')
 async def ws_handler(request: Request, ws: WebsocketImplProtocol):
     session = SessionManager(request, ws)
     await session.ws_handler()

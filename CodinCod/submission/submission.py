@@ -2,12 +2,14 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from datetime import datetime
-from time import time
 from typing import Any, Optional, cast, Final
 from bson.objectid import ObjectId
 
-from .language import Language
+from ..piston import Language
 from . import submissions_collection
+
+from ..puzzle import Puzzle
+
 
 @dataclass
 class Submission:
@@ -41,7 +43,7 @@ class Submission:
         return sum(self.validators)/len(self.validators)
 
     @classmethod
-    def create(cls, user_id, puzzle_id, language: Language, code) -> Optional[Submission]:
+    def create(cls, user_id: ObjectId, puzzle_id: ObjectId, language: Language, code: str) -> Optional[Submission]:
         timestamp = datetime.now().isoformat()
         result = submissions_collection.insert_one(
             {
@@ -95,11 +97,8 @@ class Submission:
             "submitted_at": self.submitted_at
         }
 
-    async def execute_testcases(self, puzzle):
-        # execute for each validator the code
-        # aka does the code work or not for a given Validator?
-        assert puzzle is not None
-        for validator in puzzle.validators:
+    async def execute(self):
+        for validator in Puzzle.get_by_id(self.puzzle_id).validators:
             success, _ = await validator.execute(self.code, self.language)
             self.validators.append(success)
 

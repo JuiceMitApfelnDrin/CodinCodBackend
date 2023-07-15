@@ -1,29 +1,26 @@
 from typing import Any, Final
 
-import re
-
 from sanic import text, json
 from sanic.response import HTTPResponse, redirect
 from sanic.request import Request
+from sanic.exceptions import BadRequest, Unauthorized
 
 from bson.objectid import ObjectId
 from bson.errors import InvalidId
 
 from validate_email import validate_email
 
-from .. import app
-
+from . import user_blueprint
 from ...user import User
-from ...exceptions import CodinCodException
 
-@app.get('/users')
+@user_blueprint.get('/users')
 async def users(request: Request):
     args = request.args
     if "id" in args:
         try:
             user_id = ObjectId(args["id"][0])
         except InvalidId:
-            raise CodinCodException("Invalid user id!")
+            raise BadRequest("Invalid user id!")
             
         user = User.get_by_id(user_id)
         return json(user.public_info())
@@ -42,10 +39,9 @@ async def users(request: Request):
         user = User.get_by_nickname(str(args["nickname"][0]))
         return json(user.public_info())
 
-    return text("Invalid request: missing arguments", status = 400)
+    raise BadRequest("Invalid request: missing arguments")
 
-
-@app.post('/register')
+@user_blueprint.post('/register')
 async def register(request: Request):
     content:  dict[str, Any] = request.json
     nickname: str = content["nickname"]
@@ -72,7 +68,7 @@ async def register(request: Request):
 
 
 # WIP! Didn't test this at all!
-@app.post('/login')
+@user_blueprint.post('/login')
 async def login(request: Request):
     content:  dict[str, Any] = request.json
     nickname: str = content["nickname"]
@@ -80,11 +76,11 @@ async def login(request: Request):
 
     user = User.get_by_nickname(nickname)
     if user is None:
-        return text("Password or Nickname is incorrect", status = 400)
+        raise Unauthorized("Password or Nickname is incorrect")
 
     iscorrect, token = user.verify_password(password)
     if not iscorrect:
-        return text("Password or Nickname is incorrect", status = 400)
+        raise Unauthorized("Password or Nickname is incorrect")
 
     response = HTTPResponse()
     response.cookies["token"] = token

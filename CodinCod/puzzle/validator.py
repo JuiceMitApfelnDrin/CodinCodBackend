@@ -1,11 +1,10 @@
 from dataclasses import dataclass
 
-from ..submission import piston
+from ..piston import piston, Language
 
 from .validator_type import ValidatorType
-from ..submission.language import Language
+from ..piston.language import Language
 from pistonapi.exceptions import PistonError
-
 
 @dataclass
 class Validator:

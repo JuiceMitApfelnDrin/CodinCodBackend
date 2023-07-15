@@ -61,7 +61,7 @@ class GameRoom:
                 "puzzle_id": puzzle.id,
                 "config": config.as_dict(),
                 "start_time": start_time.isoformat(),
-                "game_state": GameRoomState.WAITING_FOR_PLAYERS.name,
+                "state": GameRoomState.WAITING_FOR_PLAYERS.name,
                 "players_ids": [],
                 "submissions_ids": []
             }
@@ -97,7 +97,7 @@ class GameRoom:
         return cls.from_db_dict(info)
 
     @classmethod
-    def from_db_dict(cls, info: dict):
+    def from_db_dict(cls, info: dict) -> GameRoom:
         creator = User.get_by_id(info["creator_id"])
         puzzle = Puzzle.get_by_id(info["puzzle_id"])
 
@@ -135,6 +135,21 @@ class GameRoom:
             raise GameRoomException("Can't find GameRoom")
 
         return cls.__active_gamerooms[gameroom_id]
+
+    def update(self):
+        games_collection.update_one(
+            { '_id': self._id },
+            {
+                "puzzle_id": self.puzzle.id,
+                "config": self.config.as_dict(),
+                "start_time": self.start_time.isoformat(),
+                "state": self.state.name,
+                "players_ids": [player_id for player_id in self.players]
+                    if self.state != GameRoomState.WAITING_FOR_PLAYERS else [],
+                "submissions_ids": [submission_id for submission_id in self.submissions]
+            }
+        )
+
 
     def as_db_dict(self) -> dict[str, Any]:
         """
@@ -221,7 +236,7 @@ class GameRoom:
                 "Can't join: game already started!")
 
         self.players[user.id] = user
-        # TODO: update frontend
+        # TODO: update frontend through websocket
 
     def remove_player(self, user: User):
         """
@@ -236,7 +251,7 @@ class GameRoom:
                 "Can't remove player from Game: Game has already started!")
         
         del self.players[user.id]
-        # TODO: update frontend through websockets
+        # TODO: update frontend through websocket
 
     def add_submission(self, submission: Submission):
         """

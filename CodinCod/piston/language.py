@@ -1,8 +1,6 @@
 from __future__ import annotations
-from enum import Enum
 from typing import ClassVar
 from dataclasses import dataclass
-from urllib import response
 
 from . import piston
 from ..utils import static_init

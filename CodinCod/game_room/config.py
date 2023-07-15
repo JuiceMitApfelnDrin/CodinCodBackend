@@ -2,7 +2,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from ..puzzle.puzzle_type import PuzzleType
-from ..submission.language import Language
+from ..piston import Language
 # from puzzle.puzzle_difficulty import Difficulty
 from .visibility import GameRoomVisibility
 from ..game_room import visibility
