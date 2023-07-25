@@ -79,7 +79,7 @@ class GameRoom:
         game_room = cls.get_active_gameroom(gameroom_id)
         if game_room is not None:
             return game_room
-        
+
         return cls.get_from_db_by_id(gameroom_id)
 
     @classmethod
@@ -112,16 +112,16 @@ class GameRoom:
             # TODO: remove after updating submission API
             assert submission is not None
             submissions[submission_id] = submissions
-        
+
         return cls(
-            _id = info["_id"],
-            config = GameRoomConfig.from_dict(info["config"]),
-            creator = creator,
-            puzzle = puzzle,
-            start_time = datetime.fromisoformat(info["start_time"]),
-            state = GameRoomState[info["state"]],
-            players = players,
-            submissions = submissions
+            _id=info["_id"],
+            config=GameRoomConfig.from_dict(info["config"]),
+            creator=creator,
+            puzzle=puzzle,
+            start_time=datetime.fromisoformat(info["start_time"]),
+            state=GameRoomState[info["state"]],
+            players=players,
+            submissions=submissions
         )
 
     @classmethod
@@ -138,18 +138,17 @@ class GameRoom:
 
     def update(self):
         games_collection.update_one(
-            { '_id': self._id },
+            {'_id': self._id},
             {
                 "puzzle_id": self.puzzle.id,
                 "config": self.config.as_dict(),
                 "start_time": self.start_time.isoformat(),
                 "state": self.state.name,
                 "players_ids": [player_id for player_id in self.players]
-                    if self.state != GameRoomState.WAITING_FOR_PLAYERS else [],
+                if self.state != GameRoomState.WAITING_FOR_PLAYERS else [],
                 "submissions_ids": [submission_id for submission_id in self.submissions]
             }
         )
-
 
     def as_db_dict(self) -> dict[str, Any]:
         """
@@ -165,7 +164,7 @@ class GameRoom:
             "submissions_ids": list(self.submissions.keys()),
             "players_ids": list(self.submissions.keys())
         }
-    
+
     def as_dict(self) -> dict[str, Any]:
         """
         Return a represention of the game room that can be sent
@@ -209,11 +208,12 @@ class GameRoom:
         user = session.user
         self.sessions[user].remove(session)
 
-        if self.sessions[user]: return
+        if self.sessions[user]:
+            return
         del self.sessions[user]
 
         if self.state is not GameRoomState.WAITING_FOR_PLAYERS or\
-            user.id not in self.players:
+                user.id not in self.players:
             return
         self.remove_player(user)
 
@@ -249,7 +249,7 @@ class GameRoom:
         if not self.state is GameRoomState.WAITING_FOR_PLAYERS:
             raise SessionException(
                 "Can't remove player from Game: Game has already started!")
-        
+
         del self.players[user.id]
         # TODO: update frontend through websocket
 
@@ -277,11 +277,11 @@ class GameRoom:
         """
         if self.state is not GameRoomState.WAITING_FOR_PLAYERS:
             raise GameLaunchException("Game is already started!")
-        
-        if self.start_time < datetime.now() + timedelta(seconds = 10):
+
+        if self.start_time < datetime.now() + timedelta(seconds=10):
             raise GameLaunchException("Game is already starting")
 
         if start_time is None:
-            self.start_time = datetime.now() + timedelta(seconds = 5)
+            self.start_time = datetime.now() + timedelta(seconds=5)
         else:
             self.start_time = start_time

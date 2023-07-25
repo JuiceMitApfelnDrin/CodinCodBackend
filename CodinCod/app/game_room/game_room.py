@@ -34,16 +34,16 @@ async def game_join(request: Request) -> HTTPResponse:
     user = auth(request)
 
     if "id" not in request.json:
-        return text("No game id was provided", status=400)
+        raise BadRequest("No game id was provided")
 
     try:
         game_id = ObjectId(request.json["id"])
     except InvalidId:
         raise BadRequest("Invalid game id!")
-        
+
     game = GameRoom.get_by_id(game_id)
     game.add_player(user)
-    
+
     return json(game.as_dict())
 
 
@@ -52,8 +52,8 @@ async def game_start(request: Request) -> HTTPResponse:
     user = auth(request)
 
     if "id" not in request.json:
-        return text("No game id was provided", status=400)
-    
+        raise BadRequest("No game id was provided")
+
     try:
         game_id = ObjectId(request.json["id"])
     except InvalidId:
@@ -62,7 +62,7 @@ async def game_start(request: Request) -> HTTPResponse:
     game = GameRoom.get_by_id(game_id)
     if game.creator is not user:
         raise BadRequest("Only the game creator is allowed to start the game!")
-    
+
     game.launch_game()
 
     return HTTPResponse()
@@ -74,7 +74,7 @@ async def game_leave(request: Request) -> HTTPResponse:
 
     if "id" not in request.json:
         raise BadRequest("No game id was provided")
-        
+
     try:
         game_id = ObjectId(request.json["id"])
     except InvalidId:
@@ -82,5 +82,5 @@ async def game_leave(request: Request) -> HTTPResponse:
 
     game = GameRoom.get_by_id(game_id)
     game.remove_player(user)
-    
+
     return HTTPResponse()

@@ -7,9 +7,9 @@ from bson.objectid import ObjectId
 from pymongo.errors import DuplicateKeyError
 
 from . import PuzzleType, PuzzleDifficulty, puzzles_collection
-from .exception import PuzzleCreationException, PuzzleFindException
-
-from .validator import Validator
+from .exception import PuzzleCreationException, PuzzleFindException, TestCaseFindException
+from .validator import Validator, ValidatorType
+from ..piston import piston, Language
 
 @dataclass(eq=False, kw_only=True)
 class Puzzle:
@@ -118,7 +118,7 @@ class Puzzle:
 
     def as_dict(self) -> dict:
         """
-        Return a represention of the game room that can be sent
+        Return a represention of the puzzle that can be sent
         to the client.
         """
 
@@ -131,3 +131,13 @@ class Puzzle:
             "author_id": str(self.author_id),
             "puzzle_types": [puzzle_type.name for puzzle_type in self.puzzle_types]
         }
+    
+    async def run_test_case(self, test_case_index: int, code: str, language: Language) -> tuple[bool, str]:
+        test_cases = [validator for validator in self.validators if validator.type is ValidatorType.TESTCASE]
+
+        if len(test_cases) < test_case_index:
+            raise TestCaseFindException("Can't find test case in puzzle!")
+
+        success, output = await test_cases[test_case_index].execute(code, language)
+
+        return success, output

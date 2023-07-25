@@ -20,7 +20,7 @@ class Submission:
     language: Language
     submitted_at: datetime
 
-    validators: list[bool] = field(default_factory=list)
+    validators_results: list[bool] = field(default_factory=list)
     execution_finished: bool = False
     _max_code_size: Final = 9001
 
@@ -29,18 +29,14 @@ class Submission:
         return self._id
 
     @property
-    def time(self) -> datetime:
-        return self.submitted_at
-
-    @property
     def code_size(self) -> int:
         return len(self.code)
 
     @property
-    def score(self) -> Optional[float]:
+    def score(self) -> float:
         if not self.execution_finished:
-            return None
-        return sum(self.validators)/len(self.validators)
+            return 0.0
+        return sum(self.validators_results) / len(self.validators_results)
 
     @classmethod
     def create(cls, user_id: ObjectId, puzzle_id: ObjectId, language: Language, code: str) -> Optional[Submission]:
@@ -100,6 +96,6 @@ class Submission:
     async def execute(self):
         for validator in Puzzle.get_by_id(self.puzzle_id).validators:
             success, _ = await validator.execute(self.code, self.language)
-            self.validators.append(success)
+            self.validators_results.append(success)
 
         self.execution_finished = True

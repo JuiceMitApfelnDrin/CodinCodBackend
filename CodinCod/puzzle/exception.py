@@ -10,3 +10,6 @@ class PuzzleCreationException(PuzzleException):
 
 class PuzzleFindException(PuzzleException):
     pass
+
+class TestCaseFindException(PuzzleException):
+    pass

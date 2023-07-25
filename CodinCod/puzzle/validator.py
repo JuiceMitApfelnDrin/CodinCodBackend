@@ -8,7 +8,7 @@ from pistonapi.exceptions import PistonError
 
 @dataclass
 class Validator:
-    validator_type: ValidatorType
+    type: ValidatorType
     input: str
     output: str
 
@@ -20,8 +20,8 @@ class Validator:
         for _ in range(retry_limit):
             try:
                 output: str = piston.execute(
-                    lang, version, code, self.input, timeout=100)
-                return (output.rstrip() == self.output.rstrip(), output)
+                    lang, version, code, self.input, timeout = 1000)
+                return output.rstrip() == self.output.rstrip(), output
             except PistonError:
                 continue
 
@@ -34,7 +34,7 @@ class Validator:
         """
 
         return {
-            "validator_type": self.validator_type.value,
+            "validator_type": self.type.value,
             "input": self.input,
             "output": self.output,
         }
