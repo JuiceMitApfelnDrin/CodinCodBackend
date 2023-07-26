@@ -68,18 +68,18 @@ create_user(
 
 # example puzzle insert stuff, test data
 create_puzzle(
-    title="FizzBuzz",
-    statement="Print numbers from 1 to N, but if the number is divisible by F, print \"Fizz\", and if the number is divisible by B print \"Buzz\". If it is divisible by both print \"FizzBuzz\".",
-    constraints="N lines",
-    validators=[
-        Validator(validator_type=ValidatorType.TESTCASE, input="7 2 3",
-                  output="1\nFizz\nBuzz\nFizz\n5\nFizzBuzz\n7"),
-        Validator(validator_type=ValidatorType.TESTCASE, input="3 1 1",
-                  output="FizzBuzz\nFizzBuzz\nFizzBuzz"),
-        Validator(validator_type=ValidatorType.TESTCASE, input="10 11 12",
-                  output="1\n2\n3\n4\n5\n6\n7\n8\n9\n10"),
+    title = "FizzBuzz",
+    statement = "Print numbers from 1 to N, but if the number is divisible by F, print \"Fizz\", and if the number is divisible by B print \"Buzz\". If it is divisible by both print \"FizzBuzz\".",
+    constraints = "N lines",
+    validators = [
+        Validator(type = ValidatorType.TESTCASE, input = "7 2 3",
+                  output = "1\nFizz\nBuzz\nFizz\n5\nFizzBuzz\n7"),
+        Validator(type = ValidatorType.TESTCASE, input="3 1 1",
+                  output = "FizzBuzz\nFizzBuzz\nFizzBuzz"),
+        Validator(type = ValidatorType.TESTCASE, input = "10 11 12",
+                  output = "1\n2\n3\n4\n5\n6\n7\n8\n9\n10"),
     ],
-    puzzle_types=[PuzzleType.SHORTEST,
+    puzzle_types =[ PuzzleType.SHORTEST,
                   PuzzleType.FASTEST, PuzzleType.REVERSE],
-    author_id=ObjectId(puzzle_author.id)
+    author_id = ObjectId(puzzle_author.id)
 )

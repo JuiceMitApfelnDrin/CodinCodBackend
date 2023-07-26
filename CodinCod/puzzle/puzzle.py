@@ -137,7 +137,7 @@ class Puzzle:
             "test_cases": self.test_cases,
         }
     
-    async def run_test_case(self, test_case_id: int, code: str, language: Language) -> tuple[bool, str]:
+    async def run_testcase(self, test_case_id: int, code: str, language: Language) -> tuple[bool, str]:
         try:
             return await self.test_cases[test_case_id].execute(code, language)
 

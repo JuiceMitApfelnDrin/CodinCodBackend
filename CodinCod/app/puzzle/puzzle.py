@@ -36,8 +36,8 @@ async def puzzle(request: Request):
 
     raise BadRequest("No puzzle_id/author_id was provided")
 
-@puzzle_blueprint.post("/run_test_case")
-async def run_test_case(request: Request):
+@puzzle_blueprint.post("/run_testcase")
+async def run_testcase(request: Request):
     user = auth(request)
 
     # TODO:  eliminate repetition
@@ -57,7 +57,7 @@ async def run_test_case(request: Request):
     puzzle = Puzzle.get_by_id(request.json["puzzle_id"])
 
     try:
-        success, output = await puzzle.run_test_case(request.json["id"], request.json["code"], Language.get(request.json["language"]))
+        success, output = await puzzle.run_testcase(request.json["id"], request.json["code"], Language.get(request.json["language"]))
     
     except TestCaseFindException:
         raise BadRequest("Invalid test case id")
