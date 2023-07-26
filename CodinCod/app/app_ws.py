@@ -6,7 +6,7 @@ from typing import Final
 
 from ..session.manager import SessionManager
 
-ws_blueprint: Final = Blueprint('ws', url_prefix='/api')
+ws_blueprint: Final = Blueprint('ws', url_prefix='/')
 
 @ws_blueprint.websocket("/ws", name = 'ws')
 async def ws_handler(request: Request, ws: WebsocketImplProtocol):
