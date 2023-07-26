@@ -12,7 +12,7 @@ from bson.objectid import ObjectId
 from bson.errors import InvalidId
 
 
-@puzzle_blueprint.get('/puzzle')
+@puzzle_blueprint.get('/puzzles')
 async def puzzle(request: Request):
     args = request.args
 

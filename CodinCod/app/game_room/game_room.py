@@ -13,7 +13,7 @@ from ..user import auth
 from ...game_room import GameRoom
 
 
-@game_room_blueprint.get('/game_info')
+@game_room_blueprint.get('/info')
 async def game_info(request: Request) -> HTTPResponse:
     args = request.args
 
@@ -29,7 +29,7 @@ async def game_info(request: Request) -> HTTPResponse:
     return json(game.as_dict())
 
 
-@game_room_blueprint.post('/game_join')
+@game_room_blueprint.post('/join')
 async def game_join(request: Request) -> HTTPResponse:
     user = auth(request)
 
@@ -47,7 +47,7 @@ async def game_join(request: Request) -> HTTPResponse:
     return json(game.as_dict())
 
 
-@game_room_blueprint.post('/game_start')
+@game_room_blueprint.post('/start')
 async def game_start(request: Request) -> HTTPResponse:
     user = auth(request)
 
@@ -68,7 +68,7 @@ async def game_start(request: Request) -> HTTPResponse:
     return HTTPResponse()
 
 
-@game_room_blueprint.post('/game_leave')
+@game_room_blueprint.post('/leave')
 async def game_leave(request: Request) -> HTTPResponse:
     user = auth(request)
 

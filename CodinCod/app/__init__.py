@@ -8,6 +8,7 @@ app: Final = Sanic("CodinCod", log_config={"version": 1})
 app.config.WEBSOCKET_MAX_SIZE = 128
 app.config.WEBSOCKET_PING_INTERVAL = None  # type: ignore
 app.config.WEBSOCKET_PING_TIMEOUT = None  # type: ignore
+app.config.FALLBACK_ERROR_FORMAT = "json"
 
 from .game_room import game_room_blueprint
 from .puzzle import puzzle_blueprint

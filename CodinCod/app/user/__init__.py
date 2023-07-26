@@ -5,6 +5,6 @@ from sanic import Blueprint
 
 from .auth import auth
 
-user_blueprint: Final = Blueprint('user', url_prefix='/')
+user_blueprint: Final = Blueprint('user', url_prefix='/user')
 
 from . import user
