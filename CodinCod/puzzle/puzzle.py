@@ -29,6 +29,10 @@ class Puzzle:
     @property
     def id(self) -> ObjectId:
         return self._id
+    
+    @property
+    def test_cases(self) -> tuple[Validator, ...]:
+        return tuple(validator for validator in self.validators if validator.type is ValidatorType.TESTCASE)
 
     @classmethod
     def create(cls, title: str, statement: str, constraints: str, validators: list[Validator],
@@ -129,15 +133,13 @@ class Puzzle:
             "statement": self.statement,
             "constraints": self.constraints,
             "author_id": str(self.author_id),
-            "puzzle_types": [puzzle_type.name for puzzle_type in self.puzzle_types]
+            "puzzle_types": [puzzle_type.name for puzzle_type in self.puzzle_types],
+            "test_cases": self.test_cases,
         }
     
-    async def run_test_case(self, test_case_index: int, code: str, language: Language) -> tuple[bool, str]:
-        test_cases = [validator for validator in self.validators if validator.type is ValidatorType.TESTCASE]
+    async def run_test_case(self, test_case_id: int, code: str, language: Language) -> tuple[bool, str]:
+        try:
+            return await self.test_cases[test_case_id].execute(code, language)
 
-        if len(test_cases) < test_case_index:
+        except IndexError:
             raise TestCaseFindException("Can't find test case in puzzle!")
-
-        success, output = await test_cases[test_case_index].execute(code, language)
-
-        return success, output
